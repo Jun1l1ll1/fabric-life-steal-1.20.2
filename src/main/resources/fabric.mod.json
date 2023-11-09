@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "lifesteal",
+	"version": "${version}",
+	"name": "Life Steal",
+	"description": "This is a Life Steal Mod.",
+	"authors": [
+		"Junililli"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/lifesteal/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"junililli.lifesteal.LifeSteal"
+		],
+		"client": [
+			"junililli.lifesteal.LifeStealClient"
+		],
+		"fabric-datagen": [
+			"junililli.lifesteal.LifeStealDataGenerator"
+		]
+	},
+	"mixins": [
+		"lifesteal.mixins.json",
+		{
+			"config": "lifesteal.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.14.24",
+		"minecraft": "~1.20.2",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
