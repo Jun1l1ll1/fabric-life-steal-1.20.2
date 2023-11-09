@@ -26,8 +26,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "eatFood", at = @At("HEAD"))
     public ItemStack eatFood(World world, ItemStack stack, CallbackInfoReturnable<ItemStack> ci) {
-        System.out.println("HESIKFOSLJ_GSL");
-        System.out.println(stack.getItem());
         if (Objects.equals(stack.getItem().toString(), "heart")) {
             PlayerData playerState = StateSaverAndLoader.getPlayerState(this);
 
@@ -50,7 +48,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "damage", at = @At("HEAD"))
     public boolean  damageHEAD(DamageSource source, float amount, CallbackInfoReturnable<Boolean> ci) {
-        System.out.println("___ SM;ILE");
         PlayerData playerState = StateSaverAndLoader.getPlayerState(this);
         if (playerState.extraHearts > 0) {
             playerState.extraHearts -= (int) amount;

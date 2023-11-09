@@ -51,7 +51,6 @@ public class LifeSteal implements ModInitializer {
 			server.execute(() -> {
 				ServerPlayNetworking.send(handler.getPlayer(), INITIAL_SYNC, data);
 			});
-			System.out.println(playerState.extraHearts);
 			(handler.getPlayer()).getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(playerState.heartsOwned+playerState.extraHearts);
 		});
 

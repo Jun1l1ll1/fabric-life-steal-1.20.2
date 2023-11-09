@@ -24,10 +24,8 @@ public abstract class MilkBucketItemMixin extends Item {
 
     @Inject(method = "finishUsing", at = @At("RETURN"))
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> ci) {
-        System.out.println("MIIIIILLLLK");
         PlayerData userState = StateSaverAndLoader.getPlayerState(user);
         if (userState.extraHearts > 0) {
-            System.out.println("Oooooo");
             user.addStatusEffect(new StatusEffectInstance(ModEffects.ADD_HEART, -1, (int) ((userState.extraHearts/2)-1), false, false));
         }
 

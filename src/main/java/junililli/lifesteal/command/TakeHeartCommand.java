@@ -25,7 +25,7 @@ public class TakeHeartCommand {
                 return run(context, EntityArgumentType.getPlayers(context, "targets"));
             })))
         );
-    } // write: /hearts @a give
+    } // write: /hearts @a take
 
 
     private static int run(CommandContext<ServerCommandSource> context, Collection<? extends PlayerEntity> targets) throws CommandSyntaxException {
@@ -34,7 +34,7 @@ public class TakeHeartCommand {
             PlayerData playerState = StateSaverAndLoader.getPlayerState(player);
             playerState.heartsOwned -= 2;
             player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(playerState.heartsOwned+playerState.extraHearts);
-            context.getSource().sendMessage(Text.literal("Called take heart " + player.getEntityName()));
+            context.getSource().sendMessage(Text.literal("Took 1 heart from " + player.getEntityName()));
         }
         return 1;
     }

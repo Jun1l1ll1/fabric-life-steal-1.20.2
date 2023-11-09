@@ -24,7 +24,7 @@ public class ShowHeartsCommand {
                 return run(context, EntityArgumentType.getPlayers(context, "targets"));
             })))
         );
-    } // write: /hearts @a give
+    } // write: /hearts @a show
 
 
     private static int run(CommandContext<ServerCommandSource> context, Collection<? extends PlayerEntity> targets) throws CommandSyntaxException {
