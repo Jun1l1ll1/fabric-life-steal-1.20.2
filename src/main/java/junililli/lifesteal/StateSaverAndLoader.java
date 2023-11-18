@@ -7,21 +7,30 @@ import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class StateSaverAndLoader extends PersistentState {
+
+    public Integer mostHeartsOnServer = 0;
+    public Integer playerAmountMostHeartsOnServer = 0;
     public HashMap<UUID, PlayerData> players = new HashMap<>();
 
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
+        nbt.putInt("mostHeartsOnServer", mostHeartsOnServer);
+        nbt.putInt("playerAmountMostHeartsOnServer", playerAmountMostHeartsOnServer);
+
         NbtCompound playersNbt = new NbtCompound();
         players.forEach((uuid, playerData) -> {
             NbtCompound playerNbt = new NbtCompound();
 
             playerNbt.putInt("heartsOwned", playerData.heartsOwned);
             playerNbt.putInt("extraHearts", playerData.extraHearts);
+            playerNbt.putInt("permaHearts", playerData.permaHearts);
 
             playersNbt.put(uuid.toString(), playerNbt);
         });
@@ -33,12 +42,16 @@ public class StateSaverAndLoader extends PersistentState {
     public static StateSaverAndLoader createFromNbt(NbtCompound tag) {
         StateSaverAndLoader state = new StateSaverAndLoader();
 
+        state.mostHeartsOnServer = tag.getInt("mostHeartsOnServer");
+        state.playerAmountMostHeartsOnServer = tag.getInt("playerAmountMostHeartsOnServer");
+
         NbtCompound playersNbt = tag.getCompound("players");
         playersNbt.getKeys().forEach(key -> {
             PlayerData playerData = new PlayerData();
 
             playerData.heartsOwned = playersNbt.getCompound(key).getInt("heartsOwned");
             playerData.extraHearts = playersNbt.getCompound(key).getInt("extraHearts");
+            playerData.permaHearts = playersNbt.getCompound(key).getInt("permaHearts");
 
             UUID uuid = UUID.fromString(key);
             state.players.put(uuid, playerData);

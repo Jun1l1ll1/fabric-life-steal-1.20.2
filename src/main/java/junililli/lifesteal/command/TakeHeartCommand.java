@@ -34,6 +34,16 @@ public class TakeHeartCommand {
             PlayerData playerState = StateSaverAndLoader.getPlayerState(player);
             playerState.heartsOwned -= 2;
             player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(playerState.heartsOwned+playerState.extraHearts);
+
+            StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(context.getSource().getServer());
+            if (playerState.heartsOwned+2 >= serverState.mostHeartsOnServer) { // Had most hearts on server
+                serverState.playerAmountMostHeartsOnServer -= 1;
+                if (serverState.playerAmountMostHeartsOnServer <= 0) { // Was the only one with this amount
+                    serverState.mostHeartsOnServer = playerState.heartsOwned;
+                    serverState.playerAmountMostHeartsOnServer = 1;
+                }
+            }
+
             context.getSource().sendMessage(Text.literal("Took 1 heart from " + player.getEntityName()));
         }
         return 1;

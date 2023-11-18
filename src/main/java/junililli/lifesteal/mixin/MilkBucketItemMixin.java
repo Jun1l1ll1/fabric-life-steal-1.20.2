@@ -28,7 +28,8 @@ public abstract class MilkBucketItemMixin extends Item {
         if (userState.extraHearts > 0) {
             user.addStatusEffect(new StatusEffectInstance(ModEffects.ADD_HEART, -1, (int) ((userState.extraHearts/2)-1), false, false));
         }
-
-        //return stack.isEmpty() ? new ItemStack(Items.BUCKET) : stack;
+        if (userState.permaHearts > 0) {
+            user.addStatusEffect(new StatusEffectInstance(ModEffects.ADD_PERM_HEART, -1, (int) ((userState.permaHearts/2)-1), false, false));
+        }
     }
 }

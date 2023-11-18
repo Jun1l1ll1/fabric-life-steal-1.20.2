@@ -25,17 +25,17 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     }
 
     @Inject(method = "eatFood", at = @At("HEAD"))
-    public ItemStack eatFood(World world, ItemStack stack, CallbackInfoReturnable<ItemStack> ci) {
+    public void eatFood(World world, ItemStack stack, CallbackInfoReturnable<ItemStack> ci) {
         if (Objects.equals(stack.getItem().toString(), "heart")) {
             PlayerData playerState = StateSaverAndLoader.getPlayerState(this);
 
             if (playerState.extraHearts <= 4) { // (2 or fewer hearts)
-                if (playerState.heartsOwned-this.getHealth() <= 0) { // More or the same health as hearts (give hearts)
+                if (playerState.heartsOwned+playerState.permaHearts+playerState.extraHearts-this.getHealth() <= 0) { // More or the same health as hearts (give heart)
                     playerState.extraHearts += 2;
-                    this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(playerState.heartsOwned+playerState.extraHearts);
+                    this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(playerState.heartsOwned+playerState.extraHearts+playerState.permaHearts);
                 }
             }
-            this.setHealth(playerState.heartsOwned+playerState.extraHearts);
+            this.setHealth(playerState.heartsOwned+playerState.extraHearts+playerState.permaHearts);
 
             this.removeStatusEffect(ModEffects.ADD_HEART);
             if (playerState.extraHearts > 0) {
@@ -43,7 +43,19 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             }
         }
 
-        return stack;
+        if (Objects.equals(stack.getItem().toString(), "perm_heart")) {
+            PlayerData playerState = StateSaverAndLoader.getPlayerState(this);
+
+            if (playerState.permaHearts <= 8) { // (4 or fewer hearts)
+                playerState.permaHearts += 2;
+                this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(playerState.heartsOwned+playerState.extraHearts+playerState.permaHearts);
+            }
+
+            this.removeStatusEffect(ModEffects.ADD_PERM_HEART);
+            if (playerState.permaHearts > 0) {
+                this.addStatusEffect(new StatusEffectInstance(ModEffects.ADD_PERM_HEART, -1, (int) ((playerState.permaHearts/2)-1), false, false));
+            }
+        }
     }
 
     @Inject(method = "damage", at = @At("HEAD"))
@@ -60,6 +72,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @Inject(method = "damage", at = @At("RETURN"))
     public void damageRETURN(DamageSource source, float amount, CallbackInfoReturnable<Boolean> ci) {
         PlayerData playerState = StateSaverAndLoader.getPlayerState(this);
-        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(playerState.heartsOwned+playerState.extraHearts);
+        this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(playerState.heartsOwned+playerState.extraHearts+playerState.permaHearts);
     }
 }

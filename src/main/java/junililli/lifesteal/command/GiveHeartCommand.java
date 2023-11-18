@@ -34,6 +34,15 @@ public class GiveHeartCommand {
             PlayerData playerState = StateSaverAndLoader.getPlayerState(player);
             playerState.heartsOwned += 2;
             player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(playerState.heartsOwned+playerState.extraHearts);
+
+            StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(context.getSource().getServer());
+            if (playerState.heartsOwned > serverState.mostHeartsOnServer) {
+                serverState.mostHeartsOnServer = playerState.heartsOwned;
+                serverState.playerAmountMostHeartsOnServer = 1;
+            } else if (playerState.heartsOwned == serverState.mostHeartsOnServer) {
+                serverState.playerAmountMostHeartsOnServer += 1;
+            }
+
             context.getSource().sendMessage(Text.literal("Gave 1 heart to " + player.getEntityName()));
         }
         return 1;

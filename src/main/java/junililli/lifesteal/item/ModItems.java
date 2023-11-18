@@ -14,10 +14,12 @@ public class ModItems {
 
     public static final Item SHRED = registerItem("shred", new Item(new FabricItemSettings()));
     public static final Item HEART = registerItem("heart", new Item(new FabricItemSettings().food(ModFoodComponents.HEART)));
+    public static final Item PERM_HEART = registerItem("perm_heart", new Item(new FabricItemSettings().food(ModFoodComponents.PERM_HEART)));
 
     public static void addItemsToIngredientItemGroup(FabricItemGroupEntries entries) {
         entries.add(SHRED);
         entries.add(HEART);
+        entries.add(PERM_HEART);
     }
 
     
