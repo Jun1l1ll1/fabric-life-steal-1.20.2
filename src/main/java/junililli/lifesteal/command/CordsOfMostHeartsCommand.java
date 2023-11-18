@@ -21,10 +21,10 @@ import java.util.function.Consumer;
 
 public class CordsOfMostHeartsCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-        dispatcher.register(CommandManager.literal("hearts")
-            .then(CommandManager.literal("highest").executes(CordsOfMostHeartsCommand::run))
+        dispatcher.register(CommandManager.literal("heart")
+            .then(CommandManager.literal("most").executes(CordsOfMostHeartsCommand::run))
         );
-    } // write: /hearts @a give
+    } // write: /heart most
 
 
     private static int run(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {

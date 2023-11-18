@@ -31,7 +31,7 @@ public class ShowHeartsCommand {
 
         for (PlayerEntity player : targets) {
             PlayerData playerState = StateSaverAndLoader.getPlayerState(player);
-            context.getSource().sendMessage(Text.literal(player.getEntityName() + " has " + playerState.heartsOwned + " hp, and " + playerState.extraHearts + " borrowed hp."));
+            context.getSource().sendMessage(Text.literal(player.getEntityName() + " has " + playerState.heartsOwned + " hp, " + playerState.extraHearts + " borrowed hp, and " + playerState.permaHearts + " extra hp."));
         }
         return 1;
     }

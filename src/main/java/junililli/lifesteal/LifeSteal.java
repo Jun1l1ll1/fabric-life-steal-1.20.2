@@ -17,6 +17,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralTextContent;
@@ -66,8 +67,6 @@ public class LifeSteal implements ModInitializer {
 			} else if (playerState.heartsOwned == serverState.mostHeartsOnServer) {
 				serverState.playerAmountMostHeartsOnServer += 1;
 			}
-			System.out.println(serverState.mostHeartsOnServer);
-			System.out.println(serverState.playerAmountMostHeartsOnServer);
 		});
 
 
@@ -120,6 +119,14 @@ public class LifeSteal implements ModInitializer {
 				playerState.permaHearts -= 2;
 			}
 			newPlayer.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(playerState.heartsOwned+playerState.extraHearts+playerState.permaHearts);
+		});
+
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+			PlayerData playerState = StateSaverAndLoader.getPlayerState(newPlayer);
+
+			if (playerState.permaHearts > 0) {
+				newPlayer.addStatusEffect(new StatusEffectInstance(ModEffects.ADD_PERM_HEART, -1, (int) ((playerState.permaHearts/2)-1), false, false, true));
+			}
 		});
 	}
 }
