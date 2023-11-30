@@ -15,14 +15,14 @@ import java.util.UUID;
 public class StateSaverAndLoader extends PersistentState {
 
     public Integer mostHeartsOnServer = 0;
-    public Integer playerAmountMostHeartsOnServer = 0;
+    public String playerAmountMostHeartsOnServer = ""; // eks.: "Jojouno:Iverlynet:Minnimina"
     public HashMap<UUID, PlayerData> players = new HashMap<>();
 
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
         nbt.putInt("mostHeartsOnServer", mostHeartsOnServer);
-        nbt.putInt("playerAmountMostHeartsOnServer", playerAmountMostHeartsOnServer);
+        nbt.putString("playerAmountMostHeartsOnServer", playerAmountMostHeartsOnServer);
 
         NbtCompound playersNbt = new NbtCompound();
         players.forEach((uuid, playerData) -> {
@@ -44,7 +44,7 @@ public class StateSaverAndLoader extends PersistentState {
         StateSaverAndLoader state = new StateSaverAndLoader();
 
         state.mostHeartsOnServer = tag.getInt("mostHeartsOnServer");
-        state.playerAmountMostHeartsOnServer = tag.getInt("playerAmountMostHeartsOnServer");
+        state.playerAmountMostHeartsOnServer = tag.getString("playerAmountMostHeartsOnServer");
 
         NbtCompound playersNbt = tag.getCompound("players");
         playersNbt.getKeys().forEach(key -> {

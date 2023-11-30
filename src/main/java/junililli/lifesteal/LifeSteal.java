@@ -17,6 +17,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -88,10 +89,11 @@ public class LifeSteal implements ModInitializer {
 			StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(server);
 			if (playerState.heartsOwned > serverState.mostHeartsOnServer) {
 				serverState.mostHeartsOnServer = playerState.heartsOwned;
-				serverState.playerAmountMostHeartsOnServer = 1;
-			} else if (playerState.heartsOwned == serverState.mostHeartsOnServer) {
-				serverState.playerAmountMostHeartsOnServer += 1;
+				serverState.playerAmountMostHeartsOnServer = ":"+handler.getPlayer().getUuidAsString();
+			} else if ((!serverState.playerAmountMostHeartsOnServer.contains(":"+handler.getPlayer().getUuidAsString())) && (playerState.heartsOwned == serverState.mostHeartsOnServer)) {
+				serverState.playerAmountMostHeartsOnServer += ":"+handler.getPlayer().getUuidAsString();
 			}
+			server.sendMessage(Text.literal(serverState.playerAmountMostHeartsOnServer));
 		});
 
 
@@ -113,9 +115,9 @@ public class LifeSteal implements ModInitializer {
 						StateSaverAndLoader serverState = damageSource.getAttacker() != null ? StateSaverAndLoader.getServerState(damageSource.getAttacker().getServer()) : StateSaverAndLoader.getServerState(entity.getPrimeAdversary().getServer());
 						if (killerState.heartsOwned > serverState.mostHeartsOnServer) {
 							serverState.mostHeartsOnServer = killerState.heartsOwned;
-							serverState.playerAmountMostHeartsOnServer = 1;
+							serverState.playerAmountMostHeartsOnServer = ":"+(damageSource.getAttacker() != null ? damageSource.getAttacker().getUuidAsString() : entity.getPrimeAdversary().getUuidAsString());
 						} else if (killerState.heartsOwned == serverState.mostHeartsOnServer) {
-							serverState.playerAmountMostHeartsOnServer += 1;
+							serverState.playerAmountMostHeartsOnServer += ":" + (damageSource.getAttacker() != null ? damageSource.getAttacker().getUuidAsString() : entity.getPrimeAdversary().getUuidAsString());
 						}
 					}
 				} else {
@@ -132,10 +134,15 @@ public class LifeSteal implements ModInitializer {
 
 					StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(newPlayer.getServer());
 					if (playerState.heartsOwned+2 >= serverState.mostHeartsOnServer) { // Had most hearts on server
-						serverState.playerAmountMostHeartsOnServer -= 1;
-						if (serverState.playerAmountMostHeartsOnServer <= 0) { // Was the only one with this amount
+						serverState.playerAmountMostHeartsOnServer = serverState.playerAmountMostHeartsOnServer.replace(":"+newPlayer.getUuidAsString(), "");
+						if (serverState.playerAmountMostHeartsOnServer.isEmpty()) { // Was the only one with this amount
 							serverState.mostHeartsOnServer = playerState.heartsOwned;
-							serverState.playerAmountMostHeartsOnServer = 1;
+							for (ServerPlayerEntity player : newPlayer.getServer().getPlayerManager().getPlayerList()) {
+								PlayerData thisPlayerState = StateSaverAndLoader.getPlayerState(player);
+								if (thisPlayerState.heartsOwned == serverState.mostHeartsOnServer) {
+									serverState.playerAmountMostHeartsOnServer += ":" + player.getUuidAsString();
+								}
+							}
 						}
 					}
 				}

@@ -11,6 +11,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 import java.util.Collection;
@@ -37,10 +38,15 @@ public class TakeHeartCommand {
 
             StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(context.getSource().getServer());
             if (playerState.heartsOwned+2 >= serverState.mostHeartsOnServer) { // Had most hearts on server
-                serverState.playerAmountMostHeartsOnServer -= 1;
-                if (serverState.playerAmountMostHeartsOnServer <= 0) { // Was the only one with this amount
+                serverState.playerAmountMostHeartsOnServer = serverState.playerAmountMostHeartsOnServer.replace(":"+player.getUuidAsString(), "");
+                if (serverState.playerAmountMostHeartsOnServer.isEmpty()) { // Was the only one with this amount
                     serverState.mostHeartsOnServer = playerState.heartsOwned;
-                    serverState.playerAmountMostHeartsOnServer = 1;
+                    for (ServerPlayerEntity thisPlayer : player.getServer().getPlayerManager().getPlayerList()) {
+                        PlayerData thisPlayerState = StateSaverAndLoader.getPlayerState(thisPlayer);
+                        if (thisPlayerState.heartsOwned == serverState.mostHeartsOnServer) {
+                            serverState.playerAmountMostHeartsOnServer += ":" + thisPlayer.getUuidAsString();
+                        }
+                    }
                 }
             }
 

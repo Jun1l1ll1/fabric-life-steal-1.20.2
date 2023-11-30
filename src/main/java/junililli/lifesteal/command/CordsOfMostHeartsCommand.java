@@ -31,16 +31,12 @@ public class CordsOfMostHeartsCommand {
         StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(context.getSource().getServer());
 
         List<PlayerEntity> mostHeartsPlayerNames = new ArrayList<PlayerEntity>();
-        int amountOfPlayersWithMostHearts = 0;
         for (PlayerEntity player : context.getSource().getServer().getPlayerManager().getPlayerList()) {
             PlayerData playerState = StateSaverAndLoader.getPlayerState(player);
             if (playerState.heartsOwned >= serverState.mostHeartsOnServer) { // (It should never be over, as it is set to the highest. But just in case)
                 mostHeartsPlayerNames.add(player);
-                amountOfPlayersWithMostHearts += 1;
+                serverState.playerAmountMostHeartsOnServer += ":"+player.getUuidAsString();
             }
-        }
-        if (serverState.playerAmountMostHeartsOnServer < amountOfPlayersWithMostHearts) {
-            serverState.playerAmountMostHeartsOnServer = amountOfPlayersWithMostHearts;
         }
 
         if (!mostHeartsPlayerNames.isEmpty() && serverState.mostHeartsOnServer > 20) {

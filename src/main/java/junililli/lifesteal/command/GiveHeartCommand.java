@@ -38,9 +38,9 @@ public class GiveHeartCommand {
             StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(context.getSource().getServer());
             if (playerState.heartsOwned > serverState.mostHeartsOnServer) {
                 serverState.mostHeartsOnServer = playerState.heartsOwned;
-                serverState.playerAmountMostHeartsOnServer = 1;
+                serverState.playerAmountMostHeartsOnServer = ":"+player.getUuidAsString();
             } else if (playerState.heartsOwned == serverState.mostHeartsOnServer) {
-                serverState.playerAmountMostHeartsOnServer += 1;
+                serverState.playerAmountMostHeartsOnServer += ":"+player.getUuidAsString();
             }
 
             context.getSource().sendMessage(Text.literal("Gave 1 heart to " + player.getEntityName()));

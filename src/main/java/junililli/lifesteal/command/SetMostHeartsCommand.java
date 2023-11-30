@@ -21,21 +21,19 @@ public class SetMostHeartsCommand {
                 return source.hasPermissionLevel(2);
             })
             .then(CommandManager.literal("set_most")
-            .then(CommandManager.argument("hearts", IntegerArgumentType.integer(3))
-            .then(CommandManager.argument("amount_of_players", IntegerArgumentType.integer(1)).executes((context) -> {
-                return run(context, IntegerArgumentType.getInteger(context, "hearts"), IntegerArgumentType.getInteger(context, "amount_of_players"));
-            }))))
+            .then(CommandManager.argument("hearts", IntegerArgumentType.integer(3)).executes((context) -> {
+                return run(context, IntegerArgumentType.getInteger(context, "hearts"));
+            })))
         );
     } // write: /hearts @a show
 
 
-    private static int run(CommandContext<ServerCommandSource> context, int hearts, int amount) throws CommandSyntaxException {
+    private static int run(CommandContext<ServerCommandSource> context, int hearts) throws CommandSyntaxException {
 
         StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(context.getSource().getServer());
         serverState.mostHeartsOnServer = hearts;
-        serverState.playerAmountMostHeartsOnServer = amount;
-        context.getSource().sendMessage(Text.literal("The tracker of most hearts on server is set to " + serverState.mostHeartsOnServer.toString() + " hearts. ("+serverState.playerAmountMostHeartsOnServer+" player has this)"));
-        context.getSource().sendMessage(Text.literal("This will continue to update when a player looses/gains hearts, or joins the server."));
+        context.getSource().sendMessage(Text.literal("The tracker of most hearts on server is set to " + serverState.mostHeartsOnServer.toString() + " hearts. "));
+        context.getSource().sendError(Text.literal("/heart most command will only work correctly when all players looses/gains hearts, or joins the server again."));
 
         return 1;
     }
