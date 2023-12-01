@@ -26,6 +26,11 @@ public class ClaimChristmasCommand {
         if (LocalDateTime.now().getMonthValue() == 12 && LocalDateTime.now().getDayOfMonth() <= 24) {
             PlayerData playerState = StateSaverAndLoader.getPlayerState(Objects.requireNonNull(context.getSource().getPlayer()));
             //context.getSource().sendMessage(Text.literal(String.valueOf(playerState.christmasClaimed[LocalDateTime.now().getDayOfMonth()-1])));
+
+            if (playerState.christmasClaimed.length == 0) {
+                playerState.christmasClaimed = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+            }
+
             if (playerState.christmasClaimed[LocalDateTime.now().getDayOfMonth()-1] == LocalDateTime.now().getDayOfMonth()) {
                 context.getSource().sendError(Text.literal("You already claimed the christmas calender for today. Come back tomorrow!"));
             } else {
