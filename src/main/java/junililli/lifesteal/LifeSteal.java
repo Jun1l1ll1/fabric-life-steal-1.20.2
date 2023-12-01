@@ -74,6 +74,7 @@ public class LifeSteal implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register(SetMostHeartsCommand::register);
 
 		CommandRegistrationCallback.EVENT.register(ClaimChristmasCommand::register);
+		CommandRegistrationCallback.EVENT.register(SendChristmasGiftCommand::register);
 
 
 
