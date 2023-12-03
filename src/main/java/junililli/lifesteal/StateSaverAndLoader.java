@@ -31,6 +31,7 @@ public class StateSaverAndLoader extends PersistentState {
             playerNbt.putInt("heartsOwned", playerData.heartsOwned);
             playerNbt.putInt("extraHearts", playerData.extraHearts);
             playerNbt.putInt("permaHearts", playerData.permaHearts);
+            playerNbt.putIntArray("christmasClaimed", playerData.christmasClaimed);
 
             playersNbt.put(uuid.toString(), playerNbt);
         });
@@ -52,6 +53,7 @@ public class StateSaverAndLoader extends PersistentState {
             playerData.heartsOwned = playersNbt.getCompound(key).getInt("heartsOwned");
             playerData.extraHearts = playersNbt.getCompound(key).getInt("extraHearts");
             playerData.permaHearts = playersNbt.getCompound(key).getInt("permaHearts");
+            playerData.christmasClaimed = playersNbt.getCompound(key).getIntArray("christmasClaimed");
 
             UUID uuid = UUID.fromString(key);
             state.players.put(uuid, playerData);

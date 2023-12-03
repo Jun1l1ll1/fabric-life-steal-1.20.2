@@ -1,9 +1,6 @@
 package junililli.lifesteal;
 
-import junililli.lifesteal.command.CordsOfMostHeartsCommand;
-import junililli.lifesteal.command.GiveHeartCommand;
-import junililli.lifesteal.command.ShowHeartsCommand;
-import junililli.lifesteal.command.TakeHeartCommand;
+import junililli.lifesteal.command.*;
 import junililli.lifesteal.effect.ModEffects;
 import junililli.lifesteal.item.ModItems;
 import junililli.lifesteal.util.ModLootTableModifiers;
@@ -20,13 +17,10 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
 
 public class LifeSteal implements ModInitializer {
 	public static final String MOD_ID = "lifesteal";
@@ -48,6 +42,9 @@ public class LifeSteal implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register(TakeHeartCommand::register);
 		CommandRegistrationCallback.EVENT.register(ShowHeartsCommand::register);
 		CommandRegistrationCallback.EVENT.register(CordsOfMostHeartsCommand::register);
+		CommandRegistrationCallback.EVENT.register(SetMostHeartsCommand::register);
+
+		CommandRegistrationCallback.EVENT.register(ClaimChristmasCommand::register);
 
 
 
