@@ -2,16 +2,16 @@
     "type": "minecraft:crafting_shaped",
     "category": "misc",
     "pattern": [
-        "## ",
+        " # ",
         "#$#",
         " ##"
     ],
     "key": {
         "#": {
-            "item": "minecraft:netherite_ingot"
+            "item": "lifesteal:shred"
         },
         "$": {
-            "item": "minecraft:nether_star"
+            "item": "minecraft:netherite_ingot"
         }
     },
     "result": {

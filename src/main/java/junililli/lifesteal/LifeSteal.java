@@ -22,9 +22,37 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 public class LifeSteal implements ModInitializer {
 	public static final String MOD_ID = "lifesteal";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	public static final String[] C_PRESENTS = new String[]{
+		"2:diamond", 				// 1. f
+		"128:white_concrete", 		// 2. l
+		"15:diamond", 				// 3. sunday
+		"20:iron_ingot",			// 4. m
+		"128:glass", 				// 5. t
+		"8:ender_pearl", 			// 6. o
+		"128:black_concrete", 		// 7. t
+		"64:coal", 					// 8. f
+		"192:terracotta", 			// 9. l
+		"8:golden_apple", 			// 10. sunday
+		"16:emerald", 				// 11. m
+		"20:iron_ingot", 			// 12. t
+		"128:cyan_concrete", 		// 13. o
+		"2:diamond",				// 14. t
+		"8:ender_pearl", 			// 15. f
+		"32:firework_rocket_str_I",	// 16. l (Fix this in code)
+		"2:enchanted_golden_apple",	// 17. sunday
+		"128:gray_concrete", 		// 18. m
+		"192:terracotta", 			// 19. t
+		"16:firework_rocket_fancy",	// 20. o (Fix this in code)
+		"32:copper_block", 			// 21. t
+		"1:knockback_II_stick", 	// 22. f (Fix this in code)
+		"48:bubble_coral_block",	// 23. l
+		"1:christmas_bundle",	// 24. sunday + Christmas evening
+	};
 
 	public static final Identifier INITIAL_SYNC = new Identifier(MOD_ID, "initial_sync");
 	public boolean lastKillerIsPlayer = false;
