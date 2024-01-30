@@ -14,7 +14,7 @@
 <p>You need <a href=https://fabricmc.net/use/installer/>fabric 1.20.2</a> and the <a href=https://www.curseforge.com/minecraft/mc-mods/fabric-api>fabric api</a>.</p>
 <p>Find the "releases" folder in the branch named releases, there some releas-files are located.</p>
 <p>Then place wanted release (latest is recomended) in your mods folder with the api!</p>
-
+<br/>
 
 ### To note
 <p>The repository has different branches with different roots, the one latest commited to (of the master and main branches, not releases) has the latest updates, and is to be used</p>
